@@ -4,7 +4,7 @@ import Login from "./Components/Login";
 import Welcome from "./Components/Welcome";
 import Movies from "./Components/Movies/Movies";
 import facade from "./apiFacade";
-import Admin from "./Components/Admin";
+import Admin from "./Components/Adminpage/Admin";
 import User from "./Components/User";
 import {
   BrowserRouter as Router,
@@ -33,7 +33,7 @@ function App(props) {
             <Welcome />
           </Route>
           <Route path="/movies">
-            <Movies movies={props.movies} />
+            <Movies />
           </Route>
           <Route path="/login">
             <Login loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
@@ -131,7 +131,7 @@ function ShowInfoRole({ loggedIn }) {
       {isAdmin && (
         <li>
           <NavLink activeClassName="active" to="/admin">
-            Admin info
+            Edit Movies
           </NavLink>
         </li>
       )}

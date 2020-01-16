@@ -5,7 +5,7 @@ const url = URL; //CHANGE WHEN PUT UP
 function handleHttpErrors(res) {
   if (!res.ok) {
     console.log(res.json());
-    return Promise.reject({ status: res.status, fullError: res.json() });
+    return Promise.reject({ status: res.status, fullError: res });
   }
   return res.json();
 }
@@ -46,10 +46,7 @@ function apiFacade() {
         setToken(res.token);
       });
   };
-  const fetchData = role => {
-    const options = makeOptions("GET", true); //True add's the token
-    return fetch(url + "/api/info/" + role, options).then(handleHttpErrors);
-  };
+
   const makeOptions = (method, addToken, body) => {
     var opts = {
       method: method,
@@ -67,6 +64,37 @@ function apiFacade() {
     return opts;
   };
 
+  const addMovie = body => {
+    const options = makeOptions("POST", true, body); //True add's the token
+    return fetch(url + "/api/movie", options).then(handleHttpErrors);
+  };
+
+  const editMovie = (id, body) => {
+    const options = makeOptions("PUT", true, body); //True add's the token
+    return fetch(url + "/api/movie/" + id, options).then(handleHttpErrors);
+  };
+
+  const deleteMovie = id => {
+    const options = makeOptions("DELETE", true); //True add's the token
+    return fetch(url + "/api/movie/" + id, options).then(handleHttpErrors);
+  };
+
+  const addToMovie = (item, movie_id, item_id) => {
+    const options = makeOptions("PUT", true); //True add's the token
+    return fetch(
+      url + "/api/movie/" + item + "/" + movie_id + "/" + item_id,
+      options
+    ).then(handleHttpErrors);
+  };
+
+  const removeFromMovie = (item, movie_id, item_id) => {
+    const options = makeOptions("DELETE", true); //True add's the token
+    return fetch(
+      url + "/api/movie/" + item + "/" + movie_id + "/" + item_id,
+      options
+    ).then(handleHttpErrors);
+  };
+
   async function getMovies(endpoint) {
     const data = await fetch(url + "/api/movie/" + endpoint).then(
       handleHttpErrors
@@ -81,7 +109,11 @@ function apiFacade() {
     loggedIn,
     login,
     logout,
-    fetchData,
+    addMovie,
+    editMovie,
+    deleteMovie,
+    addToMovie,
+    removeFromMovie,
     getTokenInfo,
     getMovies
   };
